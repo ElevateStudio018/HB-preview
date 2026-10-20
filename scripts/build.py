@@ -299,7 +299,7 @@ def index():
     faq = "".join(f"<details><summary>{q}</summary><p>{a}</p></details>" for q, a in FAQ)
     svc_links = " ".join(f'<a class="pill pill-dark" href="tjanst-{s["slug"]}.html">{s["title"]}</a>' for s in SERVICES[:4])
     main = f'''<section class="hero" aria-labelledby="hero-h">
-  <div class="hero-ph">{img(cover("kok-karra"), "Renoverat kök med köksö i Kärra, Hisingen", lazy=False)}</div>
+  <div class="hero-ph"><video class="hero-video" autoplay muted loop playsinline preload="auto" poster="img/hero-poster.jpg" aria-hidden="true"><source src="video/hero-mobil.mp4" type="video/mp4" media="(max-width: 767px)"><source src="video/hero.mp4" type="video/mp4"></video></div>
   <div class="wrap hero-in">
     <h1 id="hero-h">Byggfirma i Göteborg</h1>
     <p>Renovering, snickeri och ombyggnation – badrum, kök, golv, altaner och balkonger. Kostnadsfri offert, F-skatt och ansvarsförsäkring.</p>

@@ -17,6 +17,10 @@
     });
   }
 
+  // The hero film plays muted in a loop; with reduced motion it stays on its first frame.
+  var film = document.querySelector(".hero-video");
+  if (film && window.matchMedia("(prefers-reduced-motion: reduce)").matches) { film.removeAttribute("autoplay"); film.pause(); }
+
   document.querySelectorAll("[data-year]").forEach(function (y) { y.textContent = new Date().getFullYear(); });
 
   // Reference photos open full size over the page; Esc, the button or a click closes them. Without JS the link opens
