@@ -92,13 +92,16 @@ SERVICES = [
          short="Altaner, balkonger, uterum och trädäck.",
          body=["Vi bygger altaner och uterum och renoverar balkonger, både åt privatpersoner och bostadsrättsföreningar. Bland våra referenser finns en altan på 43 kvm i Ucklum, ett uterum i Vänersborg och balkongrenovering åt en BRF i Örgryte."],
          projects=["altan-ucklum", "uterum-vanersborg", "balkong-orgryte", "jacuzzi-vanersborg"]),
-    dict(slug="renovering", title="Renovering och ombyggnation", photo=cover("kok-karra").replace("-5", "-1"),
+    dict(slug="renovering", title="Renovering och ombyggnation", photo="altan-ucklum-1",
          short="Renoveringar, ombyggnationer, reparationer och projektering.",
          body=["Vi arbetar med alla typer av byggnationer, renoveringar och reparationer, från mindre servicejobb till hela entreprenader. Det kan bland annat handla om snickerier, målning, fönsterbyten, putsning, fasadrenovering, ombyggnationer och projektering."],
          projects=["kok-karra", "badrum-karra", "sten-goteborg"]),
 ]
 OTHER = ["Snickeri", "Måleri", "Fönsterbyten", "Putsning och fasad", "Dekoration", "Service och montering", "Trädgård och stenläggning"]
 WORK_TYPES = [s["title"] for s in SERVICES] + OTHER + ["Annat"]
+REF_ORDER = ["kok-karra", "badrum-karra", "badrum-guldheden", "badrum-majorna", "badrum-boras", "kok-kortedala",
+             "kok-johanneberg", "kok-smogen", "balkong-orgryte", "altan-ucklum", "uterum-vanersborg", "jacuzzi-vanersborg",
+             "fiskben-goteborg", "fiskben-falkenberg", "golv-hovas", "golv-ek-laminat", "sten-goteborg"]
 FEATURED = ["kok-karra", "badrum-boras", "balkong-orgryte", "fiskben-falkenberg", "uterum-vanersborg", "badrum-guldheden"]
 
 # --- Reviews (Google; copied exactly, only those with text) ----------------------------------------------------------
@@ -255,6 +258,23 @@ def project_card(slug):
             f'<h3>{TITLES[slug]}</h3><p>{n} bilder</p><span class="more">Se bilderna</span></a></li>')
 
 
+ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
+
+
+def service_tile(s, i):
+    """Start page: the photo fills the tile, the name and a line sit on it. The first two are large."""
+    big = i < 2
+    return (f'<li class="tile{" big" if big else ""}"><a href="tjanst-{s["slug"]}.html">'
+            f'{img(s["photo"], "", "(min-width: 1100px) 50vw, 100vw" if big else "(min-width: 1100px) 33vw, 100vw")}'
+            f'<span class="tile-txt"><b>{s["title"]}</b><span>{s["short"]}</span></span><span class="tile-go">{ARROW}</span></a></li>')
+
+
+def project_slide(slug):
+    n = len(PROJECTS[slug]["photos"])
+    return (f'<li class="slide"><a href="referenser.html#{slug}">{img(cover(slug), "", "(min-width: 760px) 360px, 80vw")}'
+            f'<span class="slide-n">{n} bilder</span><span class="slide-t">{TITLES[slug]}</span></a></li>')
+
+
 def other_pills():
     return "".join(f'<a class="pill pill-dark" href="index.html?typ={quote_plus(t)}#offert">{t}</a>' for t in OTHER)
 
@@ -294,8 +314,8 @@ def quote_form():
 
 # --- Start page -------------------------------------------------------------------------------------------------------
 def index():
-    cards = "".join(service_card(s) for s in SERVICES)
-    projects = "".join(project_card(s) for s in FEATURED)
+    tiles = "".join(service_tile(s, i) for i, s in enumerate(SERVICES))
+    slides = "".join(project_slide(s) for s in FEATURED + [p for p in REF_ORDER if p not in FEATURED])
     faq = "".join(f"<details><summary>{q}</summary><p>{a}</p></details>" for q, a in FAQ)
     svc_links = " ".join(f'<a class="pill pill-dark" href="tjanst-{s["slug"]}.html">{s["title"]}</a>' for s in SERVICES[:4])
     main = f'''<section class="hero" aria-labelledby="hero-h">
@@ -321,19 +341,20 @@ def index():
 
 <section class="sec" id="tjanster" aria-labelledby="tj-h">
   <div class="wrap">
-    <h2 id="tj-h">Våra tjänster</h2>
-    <ul class="cards">{cards}</ul>
-    <h3 class="also-h">Vi gör också</h3>
-    <div class="btns">{other_pills()}</div>
+    <div class="sec-head"><h2 id="tj-h">Våra tjänster</h2><p>Från badrum och kök till golv, altaner och balkonger – små servicejobb och hela entreprenader.</p></div>
+    <ul class="tiles">{tiles}</ul>
+    <div class="also"><h3>Vi gör också</h3><div class="btns">{other_pills()}</div></div>
   </div>
 </section>
 
-<section class="sec tint" id="referenser" aria-labelledby="ref-h">
+<section class="sec dark" id="referenser" aria-labelledby="ref-h">
   <div class="wrap">
-    <h2 id="ref-h">Vad vi gjort tidigare</h2>
-    <p class="lead">Ett urval av våra projekt. Alla bilder är från våra egna jobb.</p>
-    <ul class="cards">{projects}</ul>
-    <div class="btns"><a class="pill pill-dark" href="referenser.html">Se alla {len(PROJECTS)} referenser</a></div>
+    <div class="sec-head"><h2 id="ref-h">Vad vi gjort tidigare</h2><p>{len(PROJECTS)} projekt i Göteborg med omnejd. Alla bilder är från våra egna jobb.</p></div>
+    <div class="slider">
+      <ul class="slides" id="slides" tabindex="0" aria-label="Referensprojekt">{slides}</ul>
+      <div class="slider-nav"><button class="round round-line" type="button" data-slide="-1" aria-label="Föregående projekt">{ARROW}</button><button class="round round-line" type="button" data-slide="1" aria-label="Nästa projekt">{ARROW}</button></div>
+    </div>
+    <div class="btns"><a class="pill pill-gold" href="referenser.html">Se alla referenser</a><a class="pill pill-outline" href="#offert">Begär offert</a></div>
   </div>
 </section>
 
@@ -407,9 +428,7 @@ def gallery(slug):
 
 
 def referenser():
-    order = ["kok-karra", "badrum-karra", "badrum-guldheden", "badrum-majorna", "badrum-boras", "kok-kortedala",
-             "kok-johanneberg", "kok-smogen", "balkong-orgryte", "altan-ucklum", "uterum-vanersborg", "jacuzzi-vanersborg",
-             "fiskben-goteborg", "fiskben-falkenberg", "golv-hovas", "golv-ek-laminat", "sten-goteborg"]
+    order = REF_ORDER
     assert sorted(order) == sorted(PROJECTS)
     toc = "".join(f'<a class="pill pill-light" href="#{s}">{TITLES[s]}</a>' for s in order)
     main = f'''<section class="hero hero-small" aria-labelledby="ph-h">

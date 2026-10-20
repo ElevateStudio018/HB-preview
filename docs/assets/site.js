@@ -21,6 +21,21 @@
   var film = document.querySelector(".hero-video");
   if (film && window.matchMedia("(prefers-reduced-motion: reduce)").matches) { film.removeAttribute("autoplay"); film.pause(); }
 
+  // Reference slider: the arrows scroll one project at a time and grey out at the ends.
+  var slides = document.getElementById("slides");
+  if (slides) {
+    var arrows = document.querySelectorAll("[data-slide]");
+    function step() { var first = slides.children[0]; return first ? first.getBoundingClientRect().width + parseFloat(getComputedStyle(slides).columnGap || 0) : 300; }
+    function update() {
+      arrows[0].disabled = slides.scrollLeft < 4;
+      arrows[1].disabled = slides.scrollLeft + slides.clientWidth > slides.scrollWidth - 4;
+    }
+    arrows.forEach(function (b) { b.addEventListener("click", function () { slides.scrollBy({ left: step() * Number(b.dataset.slide), behavior: "smooth" }); }); });
+    slides.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+  }
+
   document.querySelectorAll("[data-year]").forEach(function (y) { y.textContent = new Date().getFullYear(); });
 
   // Reference photos open full size over the page; Esc, the button or a click closes them. Without JS the link opens

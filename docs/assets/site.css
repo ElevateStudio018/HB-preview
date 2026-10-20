@@ -88,7 +88,7 @@ button { font: inherit; color: inherit; }
 }
 
 /* Hero: the photo across the page, darkened enough to read white text on it */
-.hero { position: relative; isolation: isolate; display: flex; align-items: center; min-height: min(86svh, 760px); color: #fff; background: var(--dark-2); }
+.hero { position: relative; isolation: isolate; display: flex; align-items: center; min-height: calc(100svh - var(--head-h)); color: #fff; background: var(--dark-2); }
 .hero-ph { position: absolute; inset: 0; z-index: -1; overflow: hidden; }
 .hero-ph img, .hero-ph video { display: block; width: 100%; height: 100%; object-fit: cover; }
 .hero-ph::after { content: ""; position: absolute; inset: 0; background: rgb(0 0 0 / .55); }
@@ -97,6 +97,7 @@ button { font: inherit; color: inherit; }
 .hero p { margin-top: 22px; max-width: 34em; font-size: clamp(19px, 1.8vw, 23px); line-height: 1.5; }
 .hero .btns { margin-top: 36px; }
 .hero-small { min-height: min(64svh, 560px); }
+.hero-in { width: 100%; }
 .hero-note { position: absolute; right: 14px; bottom: 10px; font-size: 12px; color: rgb(255 255 255 / .7); }
 .crumbs { margin-bottom: 18px; font-size: 15px; color: rgb(255 255 255 / .8); }
 .crumbs a { color: #fff; }
@@ -234,3 +235,53 @@ button { font: inherit; color: inherit; }
 .lightbox img { max-width: 100%; max-height: 100%; border-radius: 8px; }
 .lightbox button { position: absolute; top: 12px; right: 12px; min-height: 48px; padding: 0 18px; border: 0; border-radius: 999px; background: #fff; color: var(--ink); font-weight: 700; cursor: pointer; }
 .split .lead + p { margin-top: 14px; }
+
+/* Section heading with its line beside it on wide screens */
+.sec-head { display: grid; gap: 14px; margin-bottom: 40px; }
+.sec-head p { max-width: 44ch; color: var(--muted); font-size: clamp(18px, 1.6vw, 20px); }
+@media (min-width: 960px) { .sec-head { grid-template-columns: 1fr 1fr; align-items: end; gap: 48px; } .sec-head p { justify-self: end; } }
+
+/* Services: photo tiles with the name on the photo. Two large, then three. */
+.tiles { display: grid; gap: 16px; }
+@media (min-width: 760px) { .tiles { grid-template-columns: repeat(6, 1fr); gap: 20px; } .tile { grid-column: span 3; } .tile:nth-child(n+3) { grid-column: span 2; } }
+@media (min-width: 760px) and (max-width: 1099px) { .tile:nth-child(n+3) { grid-column: span 3; } .tile:last-child { grid-column: span 6; } }
+.tile a { position: relative; display: block; overflow: hidden; border-radius: 24px; color: #fff; text-decoration: none; aspect-ratio: 4 / 3; background: var(--dark); }
+@media (min-width: 1100px) { .tile.big a { aspect-ratio: 16 / 10; } .tile:not(.big) a { aspect-ratio: 4 / 5; } }
+.tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+.tile a::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgb(0 0 0 / .78), rgb(0 0 0 / .1) 60%); }
+.tile a:hover img { transform: scale(1.04); }
+.tile-txt { position: absolute; z-index: 1; left: 24px; right: 84px; bottom: 22px; display: grid; gap: 6px; }
+.tile-txt b { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.15; letter-spacing: -0.02em; }
+.tile-txt span { font-size: 16px; color: rgb(255 255 255 / .85); }
+.tile-go { position: absolute; z-index: 1; right: 20px; bottom: 22px; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--gold); color: var(--ink); transition: transform .2s; }
+.tile-go svg { width: 22px; height: 22px; }
+.tile a:hover .tile-go { transform: translateX(4px); }
+.also { display: grid; gap: 4px; margin-top: 48px; padding-top: 32px; border-top: 1.5px solid var(--line); }
+.also .btns { margin-top: 16px; }
+
+/* Dark band */
+.dark { background: var(--dark); color: #fff; }
+.dark h2 { color: #fff; }
+.dark .sec-head p { color: rgb(255 255 255 / .7); }
+.pill-outline { border: 2px solid rgb(255 255 255 / .6); color: #fff; background: transparent; }
+.pill-outline:hover { border-color: #fff; }
+
+/* References: a row of projects that scrolls sideways, swiped on phones, with arrows on wide screens */
+.slider { position: relative; }
+.slides { display: grid; grid-auto-flow: column; grid-auto-columns: 78%; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; padding-bottom: 12px; scrollbar-width: none; }
+.slides::-webkit-scrollbar { display: none; }
+@media (min-width: 760px) { .slides { grid-auto-columns: 340px; gap: 20px; } }
+.slide { scroll-snap-align: start; }
+.slide a { position: relative; display: block; overflow: hidden; border-radius: 20px; aspect-ratio: 3 / 4; color: #fff; text-decoration: none; background: #222; }
+.slide img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+.slide a::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgb(0 0 0 / .8), transparent 55%); }
+.slide a:hover img { transform: scale(1.04); }
+.slide-t { position: absolute; z-index: 1; left: 20px; right: 20px; bottom: 20px; font-size: 20px; font-weight: 700; line-height: 1.25; }
+.slide-n { position: absolute; z-index: 1; left: 16px; top: 16px; padding: 6px 12px; border-radius: 999px; background: rgb(0 0 0 / .55); font-size: 14px; font-weight: 600; }
+.slider-nav { display: none; }
+@media (min-width: 760px) { .slider-nav { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; } }
+.round-line { border: 2px solid rgb(255 255 255 / .5); background: transparent; color: #fff; cursor: pointer; }
+.round-line:hover { border-color: var(--gold); color: var(--gold); }
+.round-line svg { width: 22px; height: 22px; }
+.round-line[data-slide="-1"] svg { transform: scaleX(-1); }
+.round-line:disabled { opacity: .35; cursor: default; }
