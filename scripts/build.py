@@ -35,7 +35,7 @@ ORG_NR = ""
 # becomes info@hbcitybygg.se. The first request to a new address only sends an activation e-mail.
 FORM_EMAIL = "elevate.studio018@gmail.com"
 
-SITE_URL = "https://elevatestudio018.github.io/HB-City-Bygg/"
+SITE_URL = "https://elevatestudio018.github.io/HB-preview/"
 
 # --- Reference projects (hbcitybygg.se/referenser) -------------------------------------------------------------------
 PROJECTS = {p["slug"]: p for p in json.loads((ROOT / "projects.json").read_text(encoding="utf-8"))}

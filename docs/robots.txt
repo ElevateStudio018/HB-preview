@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://elevatestudio018.github.io/HB-City-Bygg/sitemap.xml
+Sitemap: https://elevatestudio018.github.io/HB-preview/sitemap.xml
