@@ -46,8 +46,8 @@ Den sexkantiga HL-loggan är vektoriserad från `assets-src/hb-city-logo-origina
 ## Video i toppen
 
 Startsidans hero spelar en tyst film i loop (`docs/video/hero.mp4`, 1920×1080, ca 5 MB; `hero-mobil.mp4`, 1280×720,
-ca 2 MB, under 768 px). `docs/img/hero-poster.jpg` visas innan filmen laddat och för den som har valt reducerad
-rörelse. Originalets första halvsekund (intoning från svart) är bortklippt så att loopen inte blinkar. Byta film:
+ca 2 MB, under 768 px). `docs/img/hero-poster.jpg` visas innan filmen laddat. Filmen saknar kontroller och play-knapp; om en telefon
+håller tillbaka autouppspelning (iPhone i strömsparläge) startar den vid första tryck eller scroll. Originalets första halvsekund (intoning från svart) är bortklippt så att loopen inte blinkar. Byta film:
 
 ```bash
 ffmpeg -ss 0.5 -i ny.mp4 -an -c:v libx264 -preset slow -crf 22 -pix_fmt yuv420p -movflags +faststart docs/video/hero.mp4

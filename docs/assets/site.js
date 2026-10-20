@@ -17,9 +17,31 @@
     });
   }
 
-  // The hero film plays muted in a loop; with reduced motion it stays on its first frame.
+  // The hero film always plays, muted, in a loop, without controls. Phones only autoplay a muted inline video, so both
+  // are set as properties too; and where the phone still holds it back (iOS in Low Power Mode) it starts on the first
+  // touch or scroll, and again whenever the page comes back into view.
   var film = document.querySelector(".hero-video");
-  if (film && window.matchMedia("(prefers-reduced-motion: reduce)").matches) { film.removeAttribute("autoplay"); film.pause(); }
+  if (film) {
+    film.muted = true;
+    film.defaultMuted = true;
+    film.playsInline = true;
+    film.setAttribute("webkit-playsinline", "");
+    film.controls = false;
+    var tryPlay = function () {
+      if (!film.paused) return;
+      var p = film.play();
+      if (p && p.catch) p.catch(function () {});
+    };
+    tryPlay();
+    film.addEventListener("loadeddata", tryPlay);
+    film.addEventListener("canplay", tryPlay);
+    film.addEventListener("pause", function () { if (!document.hidden) setTimeout(tryPlay, 200); });
+    ["touchstart", "pointerdown", "scroll", "keydown"].forEach(function (ev) {
+      window.addEventListener(ev, tryPlay, { passive: true });
+    });
+    document.addEventListener("visibilitychange", function () { if (!document.hidden) tryPlay(); });
+    window.addEventListener("pageshow", tryPlay);
+  }
 
   // Reference slider: the arrows scroll one project at a time and grey out at the ends.
   var slides = document.getElementById("slides");

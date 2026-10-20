@@ -91,6 +91,12 @@ button { font: inherit; color: inherit; }
 .hero { position: relative; isolation: isolate; display: flex; align-items: center; min-height: calc(100svh - var(--head-h)); color: #fff; background: var(--dark-2); }
 .hero-ph { position: absolute; inset: 0; z-index: -1; overflow: hidden; }
 .hero-ph img, .hero-ph video { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* No play button or controls on the hero film, not even where the phone holds autoplay back: the still frame shows. */
+.hero-video { pointer-events: none; }
+.hero-video::-webkit-media-controls,
+.hero-video::-webkit-media-controls-panel,
+.hero-video::-webkit-media-controls-overlay-play-button,
+.hero-video::-webkit-media-controls-start-playback-button { display: none !important; -webkit-appearance: none; opacity: 0; }
 .hero-ph::after { content: ""; position: absolute; inset: 0; background: rgb(0 0 0 / .55); }
 .hero-in { padding-top: 64px; padding-bottom: 80px; }
 .hero h1 { color: #fff; max-width: 15em; font-size: clamp(38px, 5.4vw, 68px); font-weight: 700; line-height: 1.1; }
