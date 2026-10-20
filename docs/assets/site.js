@@ -58,6 +58,15 @@
     update();
   }
 
+  // Start page: the header turns solid once the page is scrolled or the menu is open.
+  var head = document.querySelector(".home .head");
+  if (head) {
+    var solid = function () { head.classList.toggle("solid", window.scrollY > 20 || (menu && !menu.hidden)); };
+    solid();
+    window.addEventListener("scroll", solid, { passive: true });
+    if (menu) new MutationObserver(solid).observe(menu, { attributes: true, attributeFilter: ["hidden"] });
+  }
+
   document.querySelectorAll("[data-year]").forEach(function (y) { y.textContent = new Date().getFullYear(); });
 
   // Reference photos open full size over the page; Esc, the button or a click closes them. Without JS the link opens

@@ -237,7 +237,7 @@ def page(name, title, desc, main, image=None, home=False):
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 {jsonld() if home else ''}
 </head>
-<body>
+<body{' class="home"' if home else ''}>
 {header(name)}
 <main id="main">
 {main}

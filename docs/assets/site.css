@@ -64,7 +64,14 @@ button { font: inherit; color: inherit; }
 .foot .logo-img { height: 64px; }
 
 /* Header: solid black */
-.head { position: sticky; top: 0; z-index: 40; background: var(--dark); color: #fff; }
+.head { position: sticky; top: 0; z-index: 40; background: var(--dark); color: #fff; transition: background-color .25s; }
+/* Start page: the hero fills the whole screen and the header lies on top of the film, see-through until the page is
+   scrolled (or the menu opened). */
+.home .head { position: fixed; left: 0; right: 0; background: transparent; }
+.home .head.solid { background: var(--dark); }
+.home .hero { min-height: 100vh; min-height: 100svh; }
+.home .hero-ph::before { content: ""; position: absolute; inset: 0 0 auto; height: 180px; z-index: 1; background: linear-gradient(rgb(0 0 0 / .55), transparent); }
+.home .hero-in { padding-top: calc(var(--head-h) + 48px); }
 .bar { display: flex; align-items: center; gap: 16px; height: var(--head-h); }
 .nav { display: none; margin-left: auto; gap: 28px; }
 .nav a { font-weight: 600; font-size: 17px; text-decoration: none; }
